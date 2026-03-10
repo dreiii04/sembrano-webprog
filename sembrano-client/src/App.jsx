@@ -8,26 +8,23 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='App'>
+        <header className='App-header'>
+          <h1> welcome to my react app</h1>
+          <p>
+              Name: Sembrano, Andrei <br />
+              Email: andrei@gmail.com <br />
+              address: Malabon city <br />
+              Age:21 <br />
+              Course: BSIT <br />
+              Year: 3rd year <br />
+              github:<a href="https://github.com/dreiii04/sembrano-webprog/tree/main" target="_blank" rel="noopener noreferrer">
+                https://github.com/dreiii04/sembrano-webprog/tree/main
+              </a>
+          </p>
+        </header>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        
     </>
   )
 }
