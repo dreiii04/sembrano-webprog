@@ -17,7 +17,7 @@ const AboutPage = () => {
                             We are a coffee-focused team serving practical brewing guidance and café experiences.
                         </h1>
                         <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
-                            Sembrano Coffee began as a small campus coffee project and grew into a shared space
+                            Cat Cafe began as a small campus coffee project and grew into a shared space
                             for brewing education and community. We combine sourcing knowledge, clear tutorials,
                             and approachable storytelling so every visitor can enjoy better coffee at home.
                         </p>

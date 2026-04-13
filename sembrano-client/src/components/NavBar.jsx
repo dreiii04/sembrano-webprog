@@ -23,7 +23,7 @@ const NavBar = () => {
                     <div className="h-16 w-16 overflow-hidden rounded-full bg-zinc-100">
                         <img
                             src={logo}
-                            alt="Sembrano Coffee logo"
+                            alt="Cat Cafe logo"
                             className="h-full w-full scale-110 object-cover"
                         />
                     </div>
