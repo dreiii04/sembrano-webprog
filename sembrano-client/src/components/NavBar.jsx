@@ -14,6 +14,18 @@ const navLinkClassName = ({ isActive }) =>
             ? 'bg-zinc-900 text-zinc-50'
             : 'text-zinc-900 hover:bg-zinc-200',
     ].join(' ');
+
+const authLinkClassName = ({ isActive }, variant = 'secondary') =>
+    [
+        'rounded-full border-2 border-zinc-900 px-4 py-2 text-xs font-bold uppercase tracking-wide leading-none transition',
+        variant === 'primary'
+            ? isActive
+                ? 'bg-zinc-700 text-zinc-50'
+                : 'bg-zinc-900 text-zinc-50 hover:bg-zinc-700'
+            : isActive
+                ? 'bg-zinc-200 text-zinc-900'
+                : 'bg-zinc-50 text-zinc-900 hover:bg-zinc-200',
+    ].join(' ');
  
 const NavBar = () => {
     return (
@@ -41,6 +53,21 @@ const NavBar = () => {
                         </NavLink>
                     ))}
                 </nav>
+
+                <div className="flex items-center gap-2">
+                    <NavLink
+                        to="/auth/signin"
+                        className={(props) => authLinkClassName(props, 'secondary')}
+                    >
+                        Sign In
+                    </NavLink>
+                    <NavLink
+                        to="/auth/signup"
+                        className={(props) => authLinkClassName(props, 'primary')}
+                    >
+                        Sign Up
+                    </NavLink>
+                </div>
 
                 <form className="ml-auto flex items-center gap-2">
                     <input
