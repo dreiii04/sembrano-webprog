@@ -14,6 +14,13 @@ const summaryCards = [
   { title: 'Reports Generated', value: 24 },
 ];
 
+const cardSx = {
+  borderRadius: '24px',
+  border: '2px solid #18181b',
+  backgroundColor: '#fafafa',
+  boxShadow: '8px 8px 0 rgba(24, 24, 27, 0.2)',
+};
+
 function DashboardPage() {
   return (
     <Box sx={{ color: 'text.primary' }}>
@@ -32,7 +39,7 @@ function DashboardPage() {
             Quick overview.
           </Typography>
         </Box>
-        <Stack direction="row" spacing={1.5}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button variant="contained" component={RouterLink} to="/dashboard/reports">
             Open Reports
           </Button>
@@ -51,12 +58,16 @@ function DashboardPage() {
         }}
       >
         {summaryCards.map((card) => (
-          <Card key={card.title} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}>
+          <Card key={card.title} sx={cardSx}>
             <CardContent>
-              <Typography color="text.secondary" variant="body2">
+              <Typography
+                color="text.secondary"
+                variant="overline"
+                sx={{ letterSpacing: '0.18em', fontWeight: 700 }}
+              >
                 {card.title}
               </Typography>
-              <Typography variant="h4" fontWeight={700} sx={{ my: 1 }}>
+              <Typography variant="h3" fontWeight={700} sx={{ my: 1 }}>
                 {card.value}
               </Typography>
             </CardContent>

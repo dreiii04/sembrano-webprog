@@ -1,4 +1,4 @@
-const articles = [
+  const articles = [
   {
     name: "cat-friendly-cafe-etiquette",
     title: "Cat-Friendly Cafe Etiquette for First-Time Visitors",

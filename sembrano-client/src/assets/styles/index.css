@@ -1,7 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
 @layer base {
+  :root {
+    --coffee-ink: #18181b;
+    --coffee-cream: #fafafa;
+    --coffee-latte: #f4f4f5;
+    --coffee-caramel: #d97706;
+  }
+
   body {
     @apply bg-zinc-100 text-zinc-900 antialiased;
+    font-family: 'Work Sans', 'Segoe UI', sans-serif;
+    background-color: var(--coffee-latte);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Space Grotesk', 'Work Sans', sans-serif;
+    letter-spacing: -0.01em;
   }
  
   #root {
