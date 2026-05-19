@@ -14,7 +14,7 @@ const ArticleList = ({ articles }) => {
           </p>
           <h3 className="mt-2 text-lg font-semibold text-zinc-900">{article.title}</h3>
           <p className="mt-3 text-sm leading-6 text-zinc-600">
-            {article.content[0].substring(0, 150)}...
+            {(article.content?.[0] ?? '').substring(0, 150)}...
           </p>
           <Link to={`/articles/${article.name}`}>
             <Button className="mt-4">Read More</Button>

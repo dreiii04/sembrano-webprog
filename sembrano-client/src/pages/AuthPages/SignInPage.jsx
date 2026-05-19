@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import logo from '../../assets/images/logo.jpg';
-
-const authImageUrl = 'https://i.pinimg.com/1200x/1a/7e/bc/1a7ebcc9382e30030426389a3c386cbb.jpg';
+import { loginUser } from '../../services/UserService';
 
 const inputClasses =
   'mt-2 w-full rounded-xl border border-zinc-300 bg-zinc-100 px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:bg-zinc-50';
@@ -10,9 +10,52 @@ const inputClasses =
 const actionButtonClassName = 'w-full rounded-xl py-3 text-[11px] tracking-[0.2em]';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = ({ target: { name, value } }) => {
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (error) {
+      setError('');
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+
+    try {
+      const { data } = await loginUser({
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+      });
+
+      // Persist login details so dashboard access rules can read the active role.
+      localStorage.setItem('token', data.token ?? '');
+      localStorage.setItem('firstName', data.firstName ?? '');
+      localStorage.setItem('type', data.type ?? 'viewer');
+
+      // Send every signed-in user to the dashboard shell.
+      navigate('/dashboard', { state: { firstName: data.firstName, type: data.type } });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
-     
       <div className="mb-2 flex items-center gap-3">
         <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-zinc-900">
           <img src={logo} alt="Cat Cafe logo" className="h-full w-full object-cover" />
@@ -22,20 +65,32 @@ const SignInPage = () => {
 
       <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">Log In</h1>
       <p className="mt-3 text-sm leading-6 text-zinc-600">
-        Access your account using the same monochrome wireframe language used across the site.
+        Sign in with your email and password to access your account.
       </p>
 
-      <form className="mt-8 space-y-5">
+      <div className="mt-4">
+        <Button to="/" variant="secondary">Home</Button>
+      </div>
+
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+        {error ? (
+          <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-xs text-red-700">
+            {error}
+          </p>
+        ) : null}
         <div>
           <label htmlFor="signin-email" className="text-sm font-medium text-zinc-700">
             Email Address
           </label>
           <input
             id="signin-email"
+            name="email"
             type="email"
-            placeholder="Placeholder"
             autoComplete="email"
+            value={form.email}
+            onChange={handleChange}
             className={inputClasses}
+            required
           />
         </div>
 
@@ -45,10 +100,13 @@ const SignInPage = () => {
           </label>
           <input
             id="signin-password"
+            name="password"
             type="password"
-            placeholder="Placeholder"
             autoComplete="current-password"
+            value={form.password}
+            onChange={handleChange}
             className={inputClasses}
+            required
           />
           <p className="mt-2 text-xs leading-5 text-zinc-500">
             It must be a combination of minimum 8 letters, numbers, and symbols.
@@ -66,9 +124,8 @@ const SignInPage = () => {
         </div>
 
         <Button type="submit" variant="primary" className={actionButtonClassName}>
-          Log In
+          {isSubmitting ? 'Logging In...' : 'Log In'}
         </Button>
-
       </form>
 
       <div className="mt-8 border-t border-zinc-200 pt-6 text-sm text-zinc-600">

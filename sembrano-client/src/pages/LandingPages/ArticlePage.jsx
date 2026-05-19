@@ -1,10 +1,41 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from '../../components/Button.jsx';
-import articles from '../../data/article-content.js';
+import { fetchArticleBySlug } from '../../services/ArticleService';
 
 function ArticlePage() {
   const { name } = useParams();
-  const article = articles.find(article => article.name === name);
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadArticle = async () => {
+      setLoading(true);
+      try {
+        const { data } = await fetchArticleBySlug(name);
+        setArticle(data?.article || null);
+      } catch (error) {
+        console.error('Unable to load article:', error);
+        setArticle(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArticle();
+  }, [name]);
+
+  if (loading) {
+    return (
+      <div className="flex w-full flex-col gap-6">
+        <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+          <div className="max-auto max-w-3xl">
+            <h1 className="text-3xl font-bold text-zinc-900">Loading article...</h1>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -40,7 +71,7 @@ function ArticlePage() {
 
       <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="max-auto max-w-3xl">
-          <div className="flex aspect-[4/3] items-center justify-center border-[1.25rem] border-zinc-900 bg-zinc-200 mb-8">
+          <div className="mb-8 flex aspect-4/3 items-center justify-center border-[1.25rem] border-zinc-900 bg-zinc-200">
             <div className="h-24 w-24 border-2 border-zinc-300 bg-zinc-100" />
           </div>
           <div className="prose prose-sm max-w-none space-y-4 text-zinc-700">

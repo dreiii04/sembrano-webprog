@@ -22,6 +22,7 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
@@ -38,6 +39,12 @@ const dashboardNavItems = [
         title: 'Reports',
         to: '/dashboard/reports',
         icon: AssessmentIcon,
+    },
+    {
+        label: 'Articles',
+        title: 'Articles',
+        to: '/dashboard/articles',
+        icon: ArticleIcon,
     },
     {
         label: 'Users',
@@ -334,6 +341,12 @@ const DashLayoutContent = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const pageTitle = getPageTitle(location.pathname);
+    const userRole = localStorage.getItem('type') || 'viewer';
+    // Hide user management from non-admin roles.
+    const navItems =
+        userRole === 'admin'
+            ? dashboardNavItems
+            : dashboardNavItems.filter((item) => item.to !== '/dashboard/users');
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -410,7 +423,7 @@ const DashLayoutContent = () => {
                 </DrawerHeader>
                 <Divider />
                 <List sx={{ mt: 2 }}>
-                    {dashboardNavItems.map((item) => (
+                    {navItems.map((item) => (
                         <ListItem key={item.label} disablePadding sx={{ display: 'block' }}>
                             <ListItemButton
                                 component={Link}
