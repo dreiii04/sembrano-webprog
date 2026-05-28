@@ -45,6 +45,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ ok: true, service: "sembrano-server" });
+});
+
 app.use("/api/users", userRoutes);
 app.use("/api/articles", articleRoutes);
 
