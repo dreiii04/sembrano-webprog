@@ -66,6 +66,10 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({ message: 'JWT secret is not configured' });
+        }
+
         // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {

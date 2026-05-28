@@ -20,18 +20,22 @@ If you are developing a production application, we recommend using TypeScript wi
 Deploy the app as two Vercel projects:
 
 1. `sembrano-client`
-	- Root directory: `sembrano-client`
+	- Root directory: `sembrano-client` in Vercel project settings
 	- Build command: `npm run build`
 	- Output directory: `dist`
 	- Environment variable: `VITE_API_URL=https://<your-server-project>.vercel.app/api`
+	- If the env var is missing, the app falls back to `https://sembrano-webprog-server.vercel.app/api`
 
 2. `sembrano-server`
-	- Root directory: `sembrano-server`
+	- Root directory: `sembrano-server` in Vercel project settings
 	- Deploy `index.js` with the included `vercel.json`
 	- Environment variable: `MONGO_URI=<your-mongodb-connection-string>`
+	- Environment variable: `JWT_SECRET=<your-jwt-secret>`
 
 Verification steps:
 
 - Open `https://<your-server-project>.vercel.app/api/health`
 - Open `https://<your-client-project>.vercel.app`
 - Make sure the client can reach the server URL in `VITE_API_URL`
+
+If Vercel shows "No framework detected", the project root is pointing at the repository root instead of the app folder. Change the root directory to `sembrano-client` for the frontend project.
