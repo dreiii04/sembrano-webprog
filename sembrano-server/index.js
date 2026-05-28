@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const connectDB = require("./config/db");
@@ -16,33 +15,36 @@ connectDB();
 app.use(express.json());
 
 // Middleware
+const allowedOrigins = new Set([
+    process.env.CLIENT_ORIGIN,
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8000",
+]);
+
+const corsOptions = {
+    origin(origin, callback) {
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        if (allowedOrigins.has(origin) || /^https:\/\/.*\.vercel\.app$/i.test(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(null, true);
+    },
+    credentials: false,
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+    optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(jsonParser);
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// vercel options
-const corsOptions = {
-    origin: "*", // Allow all origins
-    credentials: true, // Allow credentials
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204, // For legacy browser support
-};
-app.use(cors(corsOptions));
-
-// Curb Cores Error by adding a header here
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    );
-    next();
-});
 
 // Routes
 app.get("/api/health", (req, res) => {
